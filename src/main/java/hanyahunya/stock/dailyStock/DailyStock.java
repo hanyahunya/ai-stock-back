@@ -1,12 +1,13 @@
-package hanyahunya.stock.stock.Entity;
+package hanyahunya.stock.dailyStock;
 
+import hanyahunya.stock.stock.Stock;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "daily_stock", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"stock_id", "date"})
+        @UniqueConstraint(columnNames = {"stock_code", "date"})
 })
 @Getter
 @Setter
@@ -50,8 +51,8 @@ public class DailyStock {
     @Column(name = "individual", nullable = false)
     private Integer individual;
 
-    @Column(name = "foreign", nullable = false)
-    private Integer foreign;
+    @Column(name = "fore", nullable = false) // 외국인
+    private Integer fore;
 
     @Column(name = "institution", nullable = false)
     private Integer institution;
@@ -71,8 +72,8 @@ public class DailyStock {
     @Column(name = "trde_wght", nullable = false)
     private Double trdeWght;
 
-    @Column(name = "shrts_trde_prica", nullable = false, length = 20)
-    private String shrtsTrdePrica;
+    @Column(name = "shrts_trde_price", nullable = false, length = 20)
+    private String shrtsTrdePrice;
 
     @Column(name = "shrts_avg_pric", nullable = false)
     private Integer shrtsAvgPric;

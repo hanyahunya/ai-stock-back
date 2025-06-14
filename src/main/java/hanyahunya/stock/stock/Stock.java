@@ -1,4 +1,4 @@
-package hanyahunya.stock.stock.Entity;
+package hanyahunya.stock.stock;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -6,7 +6,7 @@ import lombok.*;
 @Entity
 @Table(name = "stock")
 @Getter
-@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Stock {
