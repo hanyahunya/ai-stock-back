@@ -23,6 +23,6 @@ public class UserController {
 
     @GetMapping("/{loginId}")
     public ResponseEntity<ResponseDto<UserInfoDto>> getUserTest(@PathVariable String loginId) {
-
+        return toResponse(userService.getUserInfo(loginId));
     }
 }
