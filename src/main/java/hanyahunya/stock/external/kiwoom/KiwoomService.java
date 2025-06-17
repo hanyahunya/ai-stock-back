@@ -2,6 +2,9 @@ package hanyahunya.stock.external.kiwoom;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,10 +24,17 @@ public class KiwoomService {
     @Value("${kiwoom.secretkey}")
     private String secretKey;
 
+    private String accessToken;
+
     private static final String API_URL = "https://api.kiwoom.com/oauth2/token";
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public String getToken() {
+    @PostConstruct
+    public void init() {
+        setToken();
+    }
+
+    void setToken() {
         Map<String, String> body = new HashMap<>();
         body.put("grant_type", "client_credentials");
         body.put("appkey", appKey);
@@ -38,15 +48,15 @@ public class KiwoomService {
         ResponseEntity<String> response = restTemplate.postForEntity(API_URL, entity, String.class);
 
         if (!response.getStatusCode().is2xxSuccessful()) {
-            return null;
+            return;
         }
 
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode node = mapper.readTree(response.getBody());
-            return node.get("token_type").asText() + " " + node.get("token").asText();
+            accessToken =  node.get("token_type").asText() + " " + node.get("token").asText();
         } catch (Exception e) {
-            return null;
+            System.out.println(e.getMessage());
         }
     }
 }
