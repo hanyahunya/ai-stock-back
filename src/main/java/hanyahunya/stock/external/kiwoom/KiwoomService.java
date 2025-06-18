@@ -2,6 +2,8 @@ package hanyahunya.stock.external.kiwoom;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hanyahunya.stock.external.kiwoom.dto.ShortSellDto;
+import hanyahunya.stock.external.kiwoom.dto.ShortSellListDto;
 import hanyahunya.stock.external.kiwoom.dto.StockDetailDto;
 import hanyahunya.stock.external.kiwoom.dto.StockDetailListDto;
 import jakarta.annotation.PostConstruct;
@@ -89,6 +91,30 @@ public class KiwoomService {
 
                 resultMap.put(dto.getDate(), dto);
             }
+        }
+        return resultMap;
+    }
+
+    public Map<LocalDate, ShortSellDto> getShortSellStockDetails(String stockCode, LocalDate startDate, LocalDate endDate, boolean isSearchDate) {
+        Map<LocalDate, ShortSellDto> resultMap = new TreeMap<>();
+
+        headers.set("Authorization", accessToken);
+        headers.set("cont-yn", "Y");
+        headers.set("api-id", "ka10014");
+
+        Map<String, String> body = new HashMap<>();
+        body.put("stk_cd", stockCode);
+        body.put("tm_tp", isSearchDate ? "1" : "0"); // 0: 期間設定　1: 最近1か月
+        body.put("strt_dt", startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        body.put("end_dt", endDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+
+        HttpEntity<Map<String, String>> entity = new HttpEntity<>(body, headers);
+
+        ResponseEntity<ShortSellListDto> response = restTemplate.exchange(API_URL + "/api/dostk/shsa", HttpMethod.POST, entity, ShortSellListDto.class);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            response.getBody().getShortSellDtos().forEach(dto -> {
+                resultMap.put(dto.getDate(), dto);
+            });
         }
         return resultMap;
     }
