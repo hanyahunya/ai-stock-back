@@ -39,42 +39,42 @@ public class DailyStock {
     @Column(name = "close_price", nullable = false)
     private Integer closePrice;
 
-    @Column(name = "price_change_rate", nullable = false)
+    @Column(name = "price_change_rate", nullable = false) //　騰落率
     private Double priceChangeRate;
 
-    @Column(name = "volume", nullable = false)
+    @Column(name = "volume", nullable = false) // 出来高
     private Integer volume;
 
-    @Column(name = "credit_ratio", nullable = false)
-    private Double creditRatio;
+//    @Column(name = "credit_ratio", nullable = false) // 信用倍率
+//    private Double creditRatio;
 
-    @Column(name = "individual", nullable = false)
+    @Column(name = "individual", nullable = false) // 個人
     private Integer individual;
 
-    @Column(name = "fore", nullable = false) // 외국인
+    @Column(name = "fore", nullable = false) // 外国人
     private Integer fore;
 
-    @Column(name = "institution", nullable = false)
+    @Column(name = "institution", nullable = false) // 企業
     private Integer institution;
 
-    @Column(name = "program", nullable = false)
+    @Column(name = "program", nullable = false) // プログラム
     private Integer program;
 
-    @Column(name = "credit_remain_ratio", nullable = false)
-    private Double creditRemainRatio;
+//    @Column(name = "credit_remain_ratio", nullable = false) // 信用残高率 *뺄예정
+//    private Double creditRemainRatio;
 
-    @Column(name = "shrts_qty", nullable = false)
-    private Integer shrtsQty;
+    @Column(name = "shrts_qty", nullable = false) // 空売り
+    private Integer shortSellVolume;
 
-    @Column(name = "ovr_shrts_qty", nullable = false)
-    private Integer ovrShrtsQty;
+    @Column(name = "ovr_shrts_qty", nullable = false) // 累積空売り
+    private Integer cumulativeShortVolume;
 
-    @Column(name = "trde_wght", nullable = false)
-    private Double trdeWght;
+    @Column(name = "trde_wght", nullable = false) // 空売り売買比率
+    private Double shortSellRatio;
 
-    @Column(name = "shrts_trde_price", nullable = false, length = 20)
-    private String shrtsTrdePrice;
+    @Column(name = "shrts_trde_price", nullable = false, length = 20) // 空売り売買代金
+    private String shortSellAmount;
 
-    @Column(name = "shrts_avg_pric", nullable = false)
-    private Integer shrtsAvgPric;
+    @Column(name = "shrts_avg_pric", nullable = false) // 空売り平均価格
+    private Integer shortSellAvgPrice;
 }
