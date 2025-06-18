@@ -2,10 +2,7 @@ package hanyahunya.stock.external.kiwoom;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanyahunya.stock.external.kiwoom.dto.ShortSellDto;
-import hanyahunya.stock.external.kiwoom.dto.ShortSellListDto;
-import hanyahunya.stock.external.kiwoom.dto.StockDetailDto;
-import hanyahunya.stock.external.kiwoom.dto.StockDetailListDto;
+import hanyahunya.stock.external.kiwoom.dto.*;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -14,9 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 @Service
 public class KiwoomService {
@@ -59,6 +54,33 @@ public class KiwoomService {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public Map<LocalDate, MergedStockDto> getMergedStockInfo(String stockCode, int month) {
+        Map<LocalDate, MergedStockDto> resultList = new TreeMap<>();
+        LocalDate searchDate = LocalDate.now().minusDays(1);
+        for (int i = 0; i < month; i++) {
+            Map<LocalDate, StockDetailDto> stockDetails = getDailyStockDetails(stockCode, searchDate);
+            Map<LocalDate, ShortSellDto> shortStocks = getShortSellStockDetails(stockCode, searchDate.minusMonths(2), searchDate, false);
+            LocalDate detailsFirstDate = ((TreeMap<LocalDate, StockDetailDto>) stockDetails).firstKey();
+            LocalDate shortsFirstDate = ((TreeMap<LocalDate, ShortSellDto>) shortStocks).firstKey();
+//            if (detailsFirstDate.isEqual(shortsFirstDate)) {
+                stockDetails.keySet().forEach(key -> {
+                    MergedStockDto mergedStockDto = new MergedStockDto();
+                    mergedStockDto.setDate(key);
+                    insertDataFromStockDetailDto(mergedStockDto, stockDetails.get(key));
+                    insertDataFromShortDto(mergedStockDto, shortStocks.get(key));
+                    resultList.put(key, mergedStockDto);
+                });
+//            }
+            searchDate = detailsFirstDate;
+            try {
+                Thread.sleep(1000); // KiwoomApiからのリクエスト制限のため
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return resultList;
     }
 
     public Map<LocalDate, StockDetailDto> getDailyStockDetails(String stockCode, LocalDate date) {
@@ -127,4 +149,26 @@ public class KiwoomService {
         return Integer.parseInt(input);
     }
 
+    private void insertDataFromStockDetailDto(MergedStockDto targetDto, StockDetailDto dto) {
+        targetDto.setDate(dto.getDate());
+        targetDto.setOpenPrice(dto.getOpenPrice());
+        targetDto.setHighPrice(dto.getHighPrice());
+        targetDto.setLowPrice(dto.getLowPrice());
+        targetDto.setClosePrice(dto.getClosePrice());
+        targetDto.setPriceChangeRate(dto.getPriceChangeRate());
+        targetDto.setVolume(dto.getVolume());
+        targetDto.setVolumePrice(dto.getVolumePrice());
+        targetDto.setIndividual(dto.getIndividual());
+        targetDto.setFore(dto.getFore());
+        targetDto.setInstitution(dto.getInstitution());
+        targetDto.setProgram(dto.getProgram());
+    }
+
+    private void insertDataFromShortDto(MergedStockDto targetDto, ShortSellDto dto) {
+        targetDto.setShortSellVolume(dto.getShortSellVolume());
+        targetDto.setCumulativeShortVolume(dto.getCumulativeShortVolume());
+        targetDto.setShortSellRatio(dto.getShortSellRatio());
+        targetDto.setShortSellAmount(dto.getShortSellAmount());
+        targetDto.setShortSellAvgPrice(dto.getShortSellAvgPrice());
+    }
 }
