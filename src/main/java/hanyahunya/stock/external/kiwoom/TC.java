@@ -1,5 +1,6 @@
 package hanyahunya.stock.external.kiwoom;
 
+import hanyahunya.stock.external.kiwoom.dto.ShortSellDto;
 import hanyahunya.stock.external.kiwoom.dto.StockDetailDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,12 @@ import java.util.Map;
 @RequestMapping("/test")
 public class TC {
     private final KiwoomService kiwoomService;
-    @GetMapping
+    @GetMapping("/1")
     public ResponseEntity<Map<LocalDate, StockDetailDto>> test() {
         return ResponseEntity.ok(kiwoomService.getDailyStockDetails("005930", LocalDate.now()));
+    }
+    @GetMapping("/2")
+    public ResponseEntity<Map<LocalDate, ShortSellDto>> test2() {
+        return ResponseEntity.ok(kiwoomService.getShortSellStockDetails("005930", LocalDate.of(2025, 4, 1), LocalDate.now(), true));
     }
 }

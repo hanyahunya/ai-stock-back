@@ -60,21 +60,21 @@ public class DailyStock {
     @Column(name = "program", nullable = false) // プログラム
     private Integer program;
 
-    @Column(name = "credit_remain_ratio", nullable = false) // 信用残高率 *뺄예정
-    private Double creditRemainRatio;
+//    @Column(name = "credit_remain_ratio", nullable = false) // 信用残高率 *뺄예정
+//    private Double creditRemainRatio;
 
-//    @Column(name = "shrts_qty", nullable = false) // 空売り
-//    private Integer shrtsQty;
+    @Column(name = "shrts_qty", nullable = false) // 空売り
+    private Integer shortSellVolume;
 
     @Column(name = "ovr_shrts_qty", nullable = false) // 累積空売り
-    private Integer ovrShrtsQty;
+    private Integer cumulativeShortVolume;
 
     @Column(name = "trde_wght", nullable = false) // 空売り売買比率
-    private Double trdeWght;
+    private Double shortSellRatio;
 
     @Column(name = "shrts_trde_price", nullable = false, length = 20) // 空売り売買代金
-    private String shrtsTrdePrice;
+    private String shortSellAmount;
 
     @Column(name = "shrts_avg_pric", nullable = false) // 空売り平均価格
-    private Integer shrtsAvgPric;
+    private Integer shortSellAvgPrice;
 }
