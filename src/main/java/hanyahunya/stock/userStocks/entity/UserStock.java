@@ -39,4 +39,13 @@ public class UserStock {
             )
     )
     private Stock stock;
+
+    public static UserStock of(String userId, String stockCode) {
+        return UserStock.builder()
+                .id(new UserStockId(userId, stockCode))
+                .user(User.builder().userId(userId).build())
+                .stock(Stock.builder().stockCode(stockCode).build())
+                .build();
+    }
+
 }
