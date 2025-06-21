@@ -1,15 +1,13 @@
 package hanyahunya.stock.userStocks;
 
 import hanyahunya.stock.userStocks.dto.UserStockDto;
+import hanyahunya.stock.userStocks.dto.UserStockListDto;
 import hanyahunya.stock.userStocks.entity.UserStock;
 import hanyahunya.stock.util.ResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static hanyahunya.stock.util.ResponseUtil.toResponse;
 
@@ -21,6 +19,12 @@ public class UserStockController {
     @PostMapping
     public ResponseEntity<ResponseDto<Void>> addUserStock(@RequestBody @Valid UserStockDto userStockDto) {
         ResponseDto<Void> responseDto = userStockService.addUserStock(userStockDto);
+        return toResponse(responseDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<ResponseDto<UserStockListDto>> getUserStockList(@RequestBody String userId) {
+        ResponseDto<UserStockListDto> responseDto = userStockService.getUserStock(userId);
         return toResponse(responseDto);
     }
 }
