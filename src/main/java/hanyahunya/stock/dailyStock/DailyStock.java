@@ -10,7 +10,7 @@ import java.time.LocalDate;
         @UniqueConstraint(columnNames = {"stock_code", "date"})
 })
 @Getter
-@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class DailyStock {
@@ -84,4 +84,10 @@ public class DailyStock {
 
     @Column(name = "lowest_ratio_7_days")
     private Double lowestRatio7Days;
+
+    @Column(name = "is_up_3_percent_in_7_days")
+    private Boolean isUp3PercentIn7Days;
+
+    @Column(name = "is_down_3_percent_in_7_days")
+    private Boolean isDown3PercentIn7Days;
 }
