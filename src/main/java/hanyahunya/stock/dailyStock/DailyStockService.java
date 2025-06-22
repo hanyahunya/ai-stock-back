@@ -1,5 +1,6 @@
 package hanyahunya.stock.dailyStock;
 
+import hanyahunya.stock.dailyStock.Dto.SaveStockDetailListDto;
 import hanyahunya.stock.dailyStock.Dto.StockChartResDto;
 import hanyahunya.stock.util.ResponseDto;
 
@@ -10,4 +11,6 @@ public interface DailyStockService {
      * @return List<StockChartPointDto>
      */
     ResponseDto<StockChartResDto> getStockChart(String StockCode);
+
+    ResponseDto<Void> saveStockData(SaveStockDetailListDto saveStockDetailListDto);
 }
