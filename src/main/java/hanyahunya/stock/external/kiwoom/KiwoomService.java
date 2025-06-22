@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -58,12 +59,17 @@ public class KiwoomService {
 
     public Map<LocalDate, MergedStockDto> getMergedStockInfo(String stockCode, int month) {
         Map<LocalDate, MergedStockDto> resultList = new TreeMap<>();
-        LocalDate searchDate = LocalDate.now().minusDays(1);
+        LocalDate searchDate;
+        if (LocalTime.now().isBefore(LocalTime.of(5, 0))) {
+            searchDate = LocalDate.now();
+        } else {
+            searchDate = LocalDate.now().minusDays(1);
+        }
         for (int i = 0; i < month; i++) {
             Map<LocalDate, StockDetailDto> stockDetails = getDailyStockDetails(stockCode, searchDate);
             Map<LocalDate, ShortSellDto> shortStocks = getShortSellStockDetails(stockCode, searchDate.minusMonths(2), searchDate, false);
             LocalDate detailsFirstDate = ((TreeMap<LocalDate, StockDetailDto>) stockDetails).firstKey();
-            LocalDate shortsFirstDate = ((TreeMap<LocalDate, ShortSellDto>) shortStocks).firstKey();
+//            LocalDate shortsFirstDate = ((TreeMap<LocalDate, ShortSellDto>) shortStocks).firstKey();
 //            if (detailsFirstDate.isEqual(shortsFirstDate)) {
                 stockDetails.keySet().forEach(key -> {
                     MergedStockDto mergedStockDto = new MergedStockDto();
@@ -73,7 +79,11 @@ public class KiwoomService {
                     resultList.put(key, mergedStockDto);
                 });
 //            }
+            if (searchDate.isEqual(detailsFirstDate)) {
+                break;
+            }
             searchDate = detailsFirstDate;
+            System.out.println(i + " " + searchDate);
             try {
                 if (i % 48 == 0 && i != 0) {
                     Thread.sleep(5000);
