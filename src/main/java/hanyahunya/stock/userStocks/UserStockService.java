@@ -10,4 +10,6 @@ public interface UserStockService {
     ResponseDto<Void> addUserStock(UserStockDto userStockDto);
 
     ResponseDto<UserStockListDto> getUserStock(String userId);
+
+    List<String> getActivatedStockCodes();
 }
