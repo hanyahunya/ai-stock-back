@@ -4,6 +4,8 @@ import hanyahunya.stock.dailyStock.Dto.SaveStockDetailListDto;
 import hanyahunya.stock.dailyStock.Dto.StockChartResDto;
 import hanyahunya.stock.util.ResponseDto;
 
+import java.time.LocalDate;
+
 public interface DailyStockService {
     /**
      * 株価チャートを応答
@@ -13,4 +15,7 @@ public interface DailyStockService {
     ResponseDto<StockChartResDto> getStockChart(String StockCode);
 
     ResponseDto<Void> saveStockData(SaveStockDetailListDto saveStockDetailListDto);
+
+    // for scheduler
+    LocalDate getLatestStockDate(String stockCode);
 }

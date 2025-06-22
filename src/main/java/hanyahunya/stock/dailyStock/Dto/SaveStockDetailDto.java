@@ -49,6 +49,7 @@ public class SaveStockDetailDto {
                 .program(this.program)
                 .shortSellVolume(this.shortSellVolume)
                 .cumulativeShortVolume(this.cumulativeShortVolume)
+                .shortSellRatio(this.shortSellRatio)
                 .shortSellAmount(this.shortSellAmount)
                 .shortSellAvgPrice(this.shortSellAvgPrice)
                 .build();

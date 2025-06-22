@@ -7,6 +7,7 @@ import hanyahunya.stock.util.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,5 +36,10 @@ public class DailyStockServiceImpl implements DailyStockService {
             return ResponseDto.fail("データの保存に失敗しました");
         }
         return ResponseDto.success("データの保存に成功しました");
+    }
+
+    @Override
+    public LocalDate getLatestStockDate(String stockCode) {
+        return dailyStockRepository.findLatestDate();
     }
 }
