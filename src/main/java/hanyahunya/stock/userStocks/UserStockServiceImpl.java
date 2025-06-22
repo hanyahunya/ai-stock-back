@@ -1,25 +1,30 @@
 package hanyahunya.stock.userStocks;
 
+import hanyahunya.stock.dailyStock.service.DailyStockService;
+import hanyahunya.stock.external.kiwoom.KiwoomService;
 import hanyahunya.stock.userStocks.dto.UserStockDto;
 import hanyahunya.stock.userStocks.dto.UserStockListDto;
 import hanyahunya.stock.userStocks.entity.UserStock;
 import hanyahunya.stock.util.ResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class UserStockServiceImpl implements UserStockService {
     private final UserStockRepository userStockRepository;
+    private final DailyStockService dailyStockService;
+    private final KiwoomService kiwoomService;
 
     @Override
     public ResponseDto<Void> addUserStock(UserStockDto userStockDto) {
         try {
             userStockRepository.save(UserStock.of(userStockDto.getUserId(), userStockDto.getStockCode()));
+            insertDailyStock(userStockDto.getStockCode());
             return ResponseDto.success("保存に成功しました");
         } catch (Exception e) {
             return ResponseDto.fail("保存に失敗しました");
@@ -42,5 +47,10 @@ public class UserStockServiceImpl implements UserStockService {
     @Override
     public List<String> getActivatedStockCodes() {
         return userStockRepository.findDistinctStockCodes();
+    }
+
+    @Async
+    public void insertDailyStock(String stockCode) {
+
     }
 }

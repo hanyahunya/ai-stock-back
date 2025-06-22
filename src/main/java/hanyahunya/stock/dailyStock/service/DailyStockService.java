@@ -1,4 +1,4 @@
-package hanyahunya.stock.dailyStock;
+package hanyahunya.stock.dailyStock.service;
 
 import hanyahunya.stock.dailyStock.Dto.SaveStockDetailListDto;
 import hanyahunya.stock.dailyStock.Dto.StockChartResDto;
