@@ -45,19 +45,20 @@ public class DailyStockAutoInsertService {
         }
     }
 
+    @Async
     public void insertStock(String stockCode) {
         List<SaveStockDetailDto> saveDtoList = new ArrayList<>();
 
-        Map<LocalDate, MergedStockDto> mergedStockInfo = kiwoomService.getMergedStockInfo(stockCode, 100000);
+        Map<LocalDate, MergedStockDto> mergedStockInfo = kiwoomService.getMergedStockInfo(stockCode, 270);
         for (LocalDate key : mergedStockInfo.keySet()) {
             MergedStockDto stockDto = mergedStockInfo.get(key);
             saveDtoList.add(toSaveDto(stockCode, stockDto));
 
-            ResponseDto<Void> result = dailyStockService.saveStockData(SaveStockDetailListDto.set(saveDtoList));
+        }
+        ResponseDto<Void> result = dailyStockService.saveStockData(SaveStockDetailListDto.set(saveDtoList));
 
-            if (!result.isSuccess()) {
-                System.out.println("[保存失敗] stockCode: " + stockCode + ", date: " + key);
-            }
+        if (!result.isSuccess()) {
+            System.out.println("[保存失敗] stockCode: " + stockCode);
         }
     }
 

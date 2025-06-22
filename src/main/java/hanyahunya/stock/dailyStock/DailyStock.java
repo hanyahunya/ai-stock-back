@@ -63,19 +63,19 @@ public class DailyStock {
 //    @Column(name = "credit_remain_ratio", nullable = false) // 信用残高率 *뺄예정
 //    private Double creditRemainRatio;
 
-    @Column(name = "shrts_qty", nullable = false) // 空売り
+    @Column(name = "shrts_qty") // 空売り
     private Integer shortSellVolume;
 
-    @Column(name = "ovr_shrts_qty", nullable = false) // 累積空売り
+    @Column(name = "ovr_shrts_qty") // 累積空売り
     private Integer cumulativeShortVolume;
 
-    @Column(name = "trde_wght", nullable = false) // 空売り売買比率
+    @Column(name = "trde_wght") // 空売り売買比率
     private Double shortSellRatio;
 
-    @Column(name = "shrts_trde_price", nullable = false) // 空売り売買代金
+    @Column(name = "shrts_trde_price") // 空売り売買代金
     private Integer shortSellAmount;
 
-    @Column(name = "shrts_avg_pric", nullable = false) // 空売り平均価格
+    @Column(name = "shrts_avg_pric") // 空売り平均価格
     private Integer shortSellAvgPrice;
 
     // ai model y value
