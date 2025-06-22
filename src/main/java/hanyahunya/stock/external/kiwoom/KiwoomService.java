@@ -75,7 +75,10 @@ public class KiwoomService {
 //            }
             searchDate = detailsFirstDate;
             try {
-                Thread.sleep(1000); // KiwoomApiからのリクエスト制限のため
+                if (i % 48 == 0 && i != 0) {
+                    Thread.sleep(5000);
+                }
+                Thread.sleep(500); // KiwoomApiからのリクエスト制限のため
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -165,6 +168,9 @@ public class KiwoomService {
     }
 
     private void insertDataFromShortDto(MergedStockDto targetDto, ShortSellDto dto) {
+        if (dto == null) {
+            return;
+        }
         targetDto.setShortSellVolume(dto.getShortSellVolume());
         targetDto.setCumulativeShortVolume(dto.getCumulativeShortVolume());
         targetDto.setShortSellRatio(dto.getShortSellRatio());
