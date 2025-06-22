@@ -17,16 +17,23 @@ public class UserStockServiceImpl implements UserStockService {
     private final UserStockRepository userStockRepository;
     private final DailyStockAutoInsertService dailyStockAutoInsertService;
 
-    @Override
     public ResponseDto<Void> addUserStock(UserStockDto userStockDto) {
         try {
+            List<String> existingCodes = userStockRepository.findDistinctStockCodes();
+            boolean isNewStockCode = !existingCodes.contains(userStockDto.getStockCode());
+
             userStockRepository.save(UserStock.of(userStockDto.getUserId(), userStockDto.getStockCode()));
-            dailyStockAutoInsertService.insertStock(userStockDto.getStockCode());
+
+            if (isNewStockCode) {
+                dailyStockAutoInsertService.insertStock(userStockDto.getStockCode());
+            }
+
             return ResponseDto.success("保存に成功しました");
         } catch (Exception e) {
             return ResponseDto.fail("保存に失敗しました");
         }
     }
+
 
     @Override
     public ResponseDto<UserStockListDto> getUserStock(String userId) {
