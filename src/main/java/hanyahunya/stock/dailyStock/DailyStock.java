@@ -72,9 +72,16 @@ public class DailyStock {
     @Column(name = "trde_wght", nullable = false) // 空売り売買比率
     private Double shortSellRatio;
 
-    @Column(name = "shrts_trde_price", nullable = false, length = 20) // 空売り売買代金
-    private String shortSellAmount;
+    @Column(name = "shrts_trde_price", nullable = false) // 空売り売買代金
+    private Integer shortSellAmount;
 
     @Column(name = "shrts_avg_pric", nullable = false) // 空売り平均価格
     private Integer shortSellAvgPrice;
+
+    // ai model y value
+    @Column(name = "highest_ratio_7_days")
+    private Double highestRatio7Days;
+
+    @Column(name = "lowest_ratio_7_days")
+    private Double lowestRatio7Days;
 }
