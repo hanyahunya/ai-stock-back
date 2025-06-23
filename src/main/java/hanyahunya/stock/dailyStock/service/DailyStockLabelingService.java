@@ -55,15 +55,26 @@ public class DailyStockLabelingService {
     }
 
     private double highestRatio7days(Queue<Integer> highQueue, Queue<Integer> endQueue) {
-        int endTemp = endQueue.peek();
-        int max = Collections.max(highQueue);
-        return ratio(endTemp, max);
+        int basePrice = endQueue.peek();
+
+        // highQueue를 리스트로 변환
+        List<Integer> highList = new ArrayList<>(highQueue);
+
+        highList.removeFirst();
+        int maxHigh = Collections.min(highList);
+
+        return ratio(basePrice, maxHigh);
     }
+
     private double lowestRatio7days(Queue<Integer> lowQueue, Queue<Integer> endQueue) {
-        int endTemp = endQueue.peek();
-        int min = Collections.min(lowQueue);
-        return ratio(endTemp, min);
+        int basePrice = endQueue.peek();
+
+        List<Integer> lowList = new ArrayList<>(lowQueue);
+        lowList.removeFirst();
+        int minLow = Collections.min(lowList);
+        return ratio(basePrice, minLow);
     }
+
     private double ratio(int currentPrice, int targetPrice) {
         return ((targetPrice - currentPrice) / (double) currentPrice) * 100;
     }
