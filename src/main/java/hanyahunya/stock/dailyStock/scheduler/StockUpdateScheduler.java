@@ -1,6 +1,7 @@
 package hanyahunya.stock.dailyStock.scheduler;
 
 import hanyahunya.stock.dailyStock.service.DailyStockAutoInsertService;
+import hanyahunya.stock.dailyStock.service.DailyStockLabelingService;
 import hanyahunya.stock.dailyStock.service.DailyStockService;
 import hanyahunya.stock.dailyStock.Dto.SaveStockDetailDto;
 import hanyahunya.stock.dailyStock.Dto.SaveStockDetailListDto;
@@ -24,12 +25,14 @@ import java.util.TreeMap;
 public class StockUpdateScheduler {
     private final UserStockService userStockService;
     private final DailyStockAutoInsertService dailyStockAutoInsertService;
+    private final DailyStockLabelingService dailyStockLabelingService;
 
     @Scheduled(cron = "0 0 6 * * *")
     public void updateStock() {
         List<String> activatedStockCodes = userStockService.getActivatedStockCodes();
         for (String stockCode : activatedStockCodes) {
             dailyStockAutoInsertService.insertNewStock(stockCode);
+            dailyStockLabelingService.labelDailyStock(stockCode, false);
         }
     }
 }
