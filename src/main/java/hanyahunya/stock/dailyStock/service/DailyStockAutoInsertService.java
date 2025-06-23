@@ -22,6 +22,7 @@ import java.util.TreeMap;
 public class DailyStockAutoInsertService {
     private final KiwoomService kiwoomService;
     private final DailyStockService dailyStockService;
+    private final DailyStockLabelingService dailyStockLabelingService;
 
     public void insertNewStock(String stockCode) {
         LocalDate latestStockDate = dailyStockService.getLatestStockDate(stockCode);
@@ -56,6 +57,8 @@ public class DailyStockAutoInsertService {
 
         }
         ResponseDto<Void> result = dailyStockService.saveStockData(SaveStockDetailListDto.set(saveDtoList));
+
+        dailyStockLabelingService.labelDailyStock(stockCode, true);
 
         if (!result.isSuccess()) {
             System.out.println("[保存失敗] stockCode: " + stockCode);
