@@ -50,7 +50,7 @@ public class DailyStockAutoInsertService {
     public void insertStock(String stockCode) {
         List<SaveStockDetailDto> saveDtoList = new ArrayList<>();
 
-        Map<LocalDate, MergedStockDto> mergedStockInfo = kiwoomService.getMergedStockInfo(stockCode, 270);
+        Map<LocalDate, MergedStockDto> mergedStockInfo = kiwoomService.getMergedStockInfo(stockCode, 1110);
         for (LocalDate key : mergedStockInfo.keySet()) {
             MergedStockDto stockDto = mergedStockInfo.get(key);
             saveDtoList.add(toSaveDto(stockCode, stockDto));
