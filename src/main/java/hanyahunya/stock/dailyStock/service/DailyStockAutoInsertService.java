@@ -22,6 +22,7 @@ import java.util.TreeMap;
 public class DailyStockAutoInsertService {
     private final KiwoomService kiwoomService;
     private final DailyStockService dailyStockService;
+    private final DailyStockLabelingService dailyStockLabelingService;
 
     public void insertNewStock(String stockCode) {
         LocalDate latestStockDate = dailyStockService.getLatestStockDate(stockCode);
@@ -49,13 +50,15 @@ public class DailyStockAutoInsertService {
     public void insertStock(String stockCode) {
         List<SaveStockDetailDto> saveDtoList = new ArrayList<>();
 
-        Map<LocalDate, MergedStockDto> mergedStockInfo = kiwoomService.getMergedStockInfo(stockCode, 270);
+        Map<LocalDate, MergedStockDto> mergedStockInfo = kiwoomService.getMergedStockInfo(stockCode, 1110);
         for (LocalDate key : mergedStockInfo.keySet()) {
             MergedStockDto stockDto = mergedStockInfo.get(key);
             saveDtoList.add(toSaveDto(stockCode, stockDto));
 
         }
         ResponseDto<Void> result = dailyStockService.saveStockData(SaveStockDetailListDto.set(saveDtoList));
+
+        dailyStockLabelingService.labelDailyStock(stockCode, true);
 
         if (!result.isSuccess()) {
             System.out.println("[保存失敗] stockCode: " + stockCode);
