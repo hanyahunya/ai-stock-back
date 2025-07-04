@@ -36,8 +36,8 @@ public class DailyStockLabelingService {
             highQueue.offer(highPrice);
             lowQueue.offer(lowPrice);
             endQueue.offer(endPrice);
-//            if (endQueue.size() != 7) { // 향후6거래일을 기준으로
-            if (endQueue.size() != 4) { // 향후3거래일을 기준으로
+            if (endQueue.size() != 7) { // 향후6거래일을 기준으로
+//            if (endQueue.size() != 4) { // 향후3거래일을 기준으로
                 continue;
             }
             double highestRatio = highestRatio7days(highQueue, endQueue);
