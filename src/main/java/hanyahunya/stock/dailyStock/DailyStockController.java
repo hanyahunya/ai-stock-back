@@ -1,6 +1,7 @@
 package hanyahunya.stock.dailyStock;
 
 import hanyahunya.stock.dailyStock.Dto.StockChartResDto;
+import hanyahunya.stock.dailyStock.service.DailyStockService;
 import hanyahunya.stock.util.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
